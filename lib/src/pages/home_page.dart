@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:seneca/src/pages/cuenta_page.dart';
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final _controller = TextEditingController();
+  final _controller2 = TextEditingController();
   bool _obscureText = true;
 
   @override
@@ -40,11 +40,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  final _textController = new TextEditingController();
-
   Widget _introducirUsuario() {
     return TextField(
-      controller: _textController,
+      controller: _controller,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.blue[200],
       decoration: InputDecoration(
@@ -65,6 +63,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _introducirContrasena() {
     return TextField(
+      controller: _controller2,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.blue[200],
       obscureText: _obscureText,
@@ -92,11 +91,10 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(color: Colors.blue),
       ),
       onPressed: () {
-        final route = MaterialPageRoute(
-            builder: (BuildContext context) =>
-                CuentaPage(value: _textController.text));
-
-        Navigator.push(context, route);
+        final List text = [];
+        text.add(_controller.text);
+        text.add(_controller2.text);
+        Navigator.pushNamed(context, 'cuenta', arguments: text);
       },
     );
   }
