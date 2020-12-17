@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage2 extends StatefulWidget {
+  HomePage2({Key key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePage2State createState() => _HomePage2State();
 }
 
-class _HomePageState extends State<HomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+class _HomePage2State extends State<HomePage2> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
   bool _obscureText = true;
@@ -29,6 +29,11 @@ class _HomePageState extends State<HomePage> {
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 70.0),
             ),
+            Divider(),
+            _introducirUsuario(),
+            Divider(),
+            _introducirContrasena(),
+            Divider(),
             _boton(),
             Divider(),
             _noRecuerdoContrasena(),
@@ -38,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _introducirCorreo() {
+  Widget _introducirUsuario() {
     return TextField(
       controller: _controller,
       style: TextStyle(color: Colors.white),
@@ -84,9 +89,10 @@ class _HomePageState extends State<HomePage> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signInWithGoogle().whenComplete(() {
+        handleSignInEmail(_controller.text, _controller2.text)
+            .then((FirebaseUser user) {
           Navigator.pushNamed(context, 'home2_page');
-        });
+        }).catchError((e) => print(e));
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
@@ -127,25 +133,19 @@ class _HomePageState extends State<HomePage> {
         child: Image(image: AssetImage('assets/imagen.png')));
   }
 
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+  Future<FirebaseUser> handleSignInEmail(String email, String password) async {
+    AuthResult result =
+        await auth.signInWithEmailAndPassword(email: email, password: password);
+    final FirebaseUser user = result.user;
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-
-    assert(!user.isAnonymous);
+    assert(user != null);
     assert(await user.getIdToken() != null);
 
-    final FirebaseUser currentUser = await _auth.currentUser();
+    final FirebaseUser currentUser = await auth.currentUser();
     assert(user.uid == currentUser.uid);
 
-    return 'signInWithGoogle succeeded: $user';
+    print('signInEmail succeeded: $user');
+
+    return user;
   }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1073535574973",
+    "firebase_url": "https://login-con-82cbf.firebaseio.com",
+    "project_id": "login-con-82cbf",
+    "storage_bucket": "login-con-82cbf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073535574973:android:001b37622dbe82f7b3a8d4",
+        "android_client_info": {
+          "package_name": "com.example.iseneca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073535574973-qv2fcnismjqetbn5f2i0t5i4gbctrfdq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXpuVuIdX-sncuw3YQmlbtmV6bM6U4Pvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073535574973-qv2fcnismjqetbn5f2i0t5i4gbctrfdq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
